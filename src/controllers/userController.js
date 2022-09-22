@@ -29,7 +29,7 @@ const getUserById = async (req, res) => {
   try {
     // * User service
     const user = await userService.read(req);
-    
+
     if (!user) {
       // * Error response helper
       getErrorResponse(res, 404, "User Not Found");
@@ -66,12 +66,23 @@ const deleteUserById = async (req, res) => {
     getErrorResponse(res, 400, "Could not delete User");
   }
 };
+
+const userProfile = async (req, res) => {
+  const user = await userService.profile({ ...req.params, ...req.body });
+  try {
+    res.status(200).send(user);
+  } catch (err) {
+    res.status(400).send(err);
+  }
+};
+
 const userController = {
   createUser,
   getUsers,
   getUserById,
   updateUserById,
   deleteUserById,
+  userProfile,
 };
 
 module.exports = userController;

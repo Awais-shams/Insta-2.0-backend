@@ -52,6 +52,17 @@ const signIn = async (body) => {
   return user;
 };
 
-const userService = { create, list, read, update, remove, signIn };
+const profile = async (body) => {
+  const user = await User.findByIdAndUpdate(body.userId, {
+    $set: {
+      about: body.about,
+      photo: body.photo,
+    },
+  });
+  await user.save();
+  return user;
+};
+
+const userService = { create, list, read, update, remove, signIn, profile };
 
 module.exports = userService;

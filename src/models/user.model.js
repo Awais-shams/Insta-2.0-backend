@@ -26,7 +26,15 @@ const userSchema = new mongoose.Schema(
       default: Date.now,
     },
     updatedAt: Date,
+    about: {
+      type: String,
+      trim: true,
+    },
+    photo: {
+      type: String,
+    },
   },
+
   { versionKey: false }
 );
 
