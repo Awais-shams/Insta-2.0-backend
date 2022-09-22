@@ -1,4 +1,5 @@
 const User = require("../models/user.model");
+const S3Files = require("../middlewares/s3");
 
 const create = async (body) => {
   const user = await new User({
@@ -53,16 +54,36 @@ const signIn = async (body) => {
 };
 
 const profile = async (body) => {
+  console.log(body);
+  await S3Files.uploadFileToS3(body);
   const user = await User.findByIdAndUpdate(body.userId, {
     $set: {
       about: body.about,
-      photo: body.photo,
+      photo: body.originalname,
     },
   });
   await user.save();
   return user;
 };
 
-const userService = { create, list, read, update, remove, signIn, profile };
+const getProfile = async (body) => {
+  const key = await User.findById(body.userId);
+  console.log(key.photo);
+  const url = await S3Files.downloadFileToS3(key.photo);
+  key.photo = url;
+  console.log(key);
+  return key;
+};
+
+const userService = {
+  create,
+  list,
+  read,
+  update,
+  remove,
+  signIn,
+  profile,
+  getProfile,
+};
 
 module.exports = userService;

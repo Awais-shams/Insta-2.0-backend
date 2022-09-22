@@ -3,6 +3,7 @@ const router = express.Router();
 
 const userController = require("../controllers/userController");
 const authController = require("../controllers/authController");
+const upload = require("../middlewares/multer");
 
 router
   .route("/api/users")
@@ -15,6 +16,9 @@ router
   .put(authController.hasAuthorization, userController.updateUserById)
   .delete(authController.hasAuthorization, userController.deleteUserById);
 
-router.route("/api/users/:userId/profile").put(userController.userProfile);
+router
+  .route("/api/users/:userId/profile")
+  .put(upload.single("image"), userController.userProfile)
+  .get(userController.getUserProfile);
 
 module.exports = router;

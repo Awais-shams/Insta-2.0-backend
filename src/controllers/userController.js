@@ -68,9 +68,25 @@ const deleteUserById = async (req, res) => {
 };
 
 const userProfile = async (req, res) => {
-  const user = await userService.profile({ ...req.params, ...req.body });
+  const user = await userService.profile({
+    ...req.params,
+    ...req.body,
+    ...req.file,
+  });
   try {
     res.status(200).send(user);
+  } catch (err) {
+    res.status(400).send(err);
+  }
+};
+
+const getUserProfile = async (req, res) => {
+  const user = await userService.getProfile({
+    ...req.params,
+  });
+  try {
+    console.log(user);
+    res.status(200).json({ user });
   } catch (err) {
     res.status(400).send(err);
   }
@@ -83,6 +99,7 @@ const userController = {
   updateUserById,
   deleteUserById,
   userProfile,
+  getUserProfile,
 };
 
 module.exports = userController;
