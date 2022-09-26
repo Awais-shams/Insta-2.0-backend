@@ -73,8 +73,8 @@ const createComments = async (body) => {
 };
 
 const updateComments = async (body) => {
-  console.log(body.postId);
-  const comments = await UserPost.findOne(body.postId);
+  console.log(body);
+  const comments = await UserPost.findById(body.postId);
   console.log(comments);
   return comments;
 };
