@@ -2,6 +2,7 @@ const userService = require("../services/userService");
 const ErrorHandler = require("../helpers/dbErrorHandler");
 const getErrorResponse = require("../helpers/errorResponse");
 const getSuccessResponse = require("../helpers/successResponse");
+const Response = require("../helpers/apiResponse");
 
 const createUser = async (req, res) => {
   try {
@@ -68,27 +69,26 @@ const deleteUserById = async (req, res) => {
 };
 
 const userProfile = async (req, res) => {
-  const user = await userService.profile({
-    ...req.params,
-    ...req.body,
-    ...req.file,
-  });
   try {
-    res.status(200).send(user);
+    const user = await userService.editProfile({
+      ...req.params,
+      ...req.body,
+      ...req.file,
+    });
+    Response(null, res, 200, "Profile updated successfully", user);
   } catch (err) {
-    res.status(400).send(err);
+    Response(false, res, 400, "Profile updated failed", err);
   }
 };
 
 const getUserProfile = async (req, res) => {
-  const user = await userService.getProfile({
-    ...req.params,
-  });
   try {
-    console.log(user);
-    res.status(200).json({ user });
+    const user = await userService.getEditProfile({
+      ...req.params,
+    });
+    Response(null, res, 200, "Profile Retrieved successfully", user);
   } catch (err) {
-    res.status(400).send(err);
+    Response(true, res, 400, "Profile Retrieved failed", err);
   }
 };
 

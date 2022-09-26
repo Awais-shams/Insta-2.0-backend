@@ -10,6 +10,7 @@ require("dotenv").config({ path: "./src/config/config.env" });
 // * local imports
 const userRoutes = require("./src/routes/userRoute");
 const authRoutes = require("./src/routes/authRoute");
+const userPostRoutes = require("./src/routes/userPostRoute");
 
 // * Connecting to mongodb
 mongoose
@@ -30,6 +31,7 @@ app.use(cookieParser());
 // * Routes
 app.use("/", userRoutes);
 app.use("/", authRoutes);
+app.use("/", userPostRoutes);
 
 // * Creating a web server
 app.listen(port, () => console.log(`Listening on Port ${port}...`));

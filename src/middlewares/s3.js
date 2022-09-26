@@ -25,19 +25,19 @@ const uploadFileToS3 = async (body) => {
     Key: body.originalname,
     ContentType: body.mimetype,
   };
+  const post = new PutObjectCommand(uploadParams);
   // Send the upload to S3
-  return await s3Client.send(new PutObjectCommand(uploadParams));
+  return await s3Client.send(post);
 };
 
-const downloadFileToS3 = async (fileKey) => {
+const downloadFileFromS3 = async (key) => {
   const getObjectParams = {
     Bucket: bucketName,
-    Key: fileKey,
+    Key: key,
   };
   const command = new GetObjectCommand(getObjectParams);
-  const url = await getSignedUrl(s3Client, command, { expiresIn: 60 });
-  console.log(url);
-  return url;
+  //  Generate URL
+  return await getSignedUrl(s3Client, command, { expiresIn: 60 });
 };
 
-module.exports = { uploadFileToS3, downloadFileToS3 };
+module.exports = { uploadFileToS3, downloadFileFromS3 };
