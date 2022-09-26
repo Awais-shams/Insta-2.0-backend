@@ -1,34 +1,42 @@
 const mongoose = require("mongoose");
 
-const User = require("../models/userModel");
-
 const postSchema = new mongoose.Schema(
   {
-    userId: {
-      type: mongoose.SchemaTypes.ObjectId,
-      ref: User,
+    text: {
+      type: String,
+      trim: true,
+      required: "Text is required",
     },
     photo: {
       type: String,
     },
-    caption: {
-      type: String,
-      trim: true,
-      required: "caption/message is required",
+    postedBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "user",
     },
     createdAt: {
       type: Date,
       default: Date.now,
     },
-    likes: {
-      type: Number,
-      default: null,
-    },
-    comments: {
-      type: String,
-      default: null,
-    },
-    updatedAt: Date,
+    likes: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "user",
+      },
+    ],
+    comments: [
+      {
+        text: String,
+        createdAt: {
+          type: Date,
+          default: Date.now,
+        },
+        postedBy: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "user",
+        },
+      },
+    ],
   },
 
   { versionKey: false }
