@@ -7,7 +7,7 @@ const Response = require("../helpers/apiResponse");
 const createUser = async (req, res) => {
   try {
     const user = await userService.create({ ...req.body });
-    getSuccessResponse(res, 200, user, "New user has been created");
+    Response(null, res, 200, "Account created successfully", user);
   } catch (err) {
     return res.status(400).json({
       error: ErrorHandler(err),
@@ -92,6 +92,12 @@ const getUserProfile = async (req, res) => {
   }
 };
 
+const addFollowing = async (req, res) => {
+  console.log("i am here at controller");
+  const test = await userService.following();
+  console.log(test);
+};
+
 const userController = {
   createUser,
   getUsers,
@@ -100,6 +106,7 @@ const userController = {
   deleteUserById,
   userProfile,
   getUserProfile,
+  addFollowing,
 };
 
 module.exports = userController;

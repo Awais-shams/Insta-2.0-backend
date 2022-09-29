@@ -88,15 +88,27 @@ const postCommentsById = async (req, res) => {
   }
 };
 
-const editCommentsById = async (req, res) => {
+// const editCommentsById = async (req, res) => {
+//   try {
+//     const comments = await userPostService.updateComments({
+//       ...req.body,
+//       ...req.params,
+//     });
+//     Response(false, res, 200, "comment updated successfully", comments);
+//   } catch (err) {
+//     Response(true, res, 400, "comment updated failed");
+//   }
+// };
+
+const unCommentById = async (req, res) => {
   try {
-    const comments = await userPostService.updateComments({
+    const comments = await userPostService.removeComments({
       ...req.body,
       ...req.params,
     });
-    Response(false, res, 200, "comment updated successfully", comments);
+    Response(false, res, 200, "comment removed successfully", comments);
   } catch (err) {
-    Response(true, res, 400, "comment updated failed");
+    Response(true, res, 400, "comment removed failed");
   }
 };
 
@@ -109,5 +121,6 @@ module.exports = {
   postLikes,
   postUnlikes,
   postCommentsById,
-  editCommentsById,
+  // editCommentsById,
+  unCommentById,
 };

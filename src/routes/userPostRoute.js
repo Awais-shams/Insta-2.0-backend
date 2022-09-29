@@ -23,7 +23,7 @@ router
   .put(userPostController.postCommentsById);
 
 router
-  .route("/api/posts/:postId/:commentId/editComments")
-  .put(userPostController.editCommentsById);
+  .route("/api/posts/:postId/:commentId/uncomments")
+  .put(userPostController.unCommentById);
 
 module.exports = router;

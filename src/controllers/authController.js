@@ -8,19 +8,21 @@ const signin = async (req, res) => {
   try {
     const user = await userService.signIn({ ...req.body });
     if (!user) {
-      Response(false, res, 400, "Invalid Email");
+      Response(true, res, 404, "Invalid Email");
     }
     const compare = await bcrypt.compare(
       req.body.password,
       user.hashedPassword
     );
     if (!compare) {
-      Response(false, res, 400, "Invalid Password");
+      Response(true, res, 404, "Invalid Password");
     } else {
       const token = await user.generateAuthToken();
       res.cookie("jwt", token, { expire: new Date() + 9999 });
+      user.hashedPassword = undefined;
+      user.salt = undefined;
       return res.header("x-auth-token", token).status(200).json({
-        message: "User signed in successfully",
+        message: "Logged In successfully",
         data: user,
         token: token,
       });

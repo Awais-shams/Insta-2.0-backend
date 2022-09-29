@@ -16,6 +16,7 @@ router
   .put(authController.hasAuthorization, userController.updateUserById)
   .delete(authController.hasAuthorization, userController.deleteUserById);
 
+router.route("/api/users/follow").put(userController.addFollowing);
 router
   .route("/api/users/:userId/profile")
   .put(upload.single("image"), userController.userProfile)

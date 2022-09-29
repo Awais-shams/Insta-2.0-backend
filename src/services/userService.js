@@ -10,6 +10,8 @@ const create = async (body) => {
   await user.save();
   user.hashedPassword = undefined;
   user.salt = undefined;
+  user.followers = undefined;
+  user.following = undefined;
   return user;
 };
 
@@ -76,6 +78,11 @@ const getEditProfile = async (body) => {
   return user;
 };
 
+const following = async (body) => {
+  console.log("i am here at following service");
+  return true;
+};
+
 const userService = {
   create,
   list,
@@ -85,6 +92,7 @@ const userService = {
   signIn,
   editProfile,
   getEditProfile,
+  following,
 };
 
 module.exports = userService;

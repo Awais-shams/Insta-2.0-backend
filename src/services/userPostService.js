@@ -72,11 +72,37 @@ const createComments = async (body) => {
   return comments;
 };
 
-const updateComments = async (body) => {
-  console.log(body);
-  const comments = await UserPost.findById(body.postId);
-  console.log(comments);
-  return comments;
+// const updateComments = async (body) => {
+//   console.log(body);
+//   const userPost = await UserPost.find(body.postId);
+//   if (userPost) {
+//     const postedBy=await UserPost.
+//   }
+//   return comment;
+// };
+
+const removeComments = async (body) => {
+  // const test = await UserPost.findOne(
+  //   { _id: "6331a9336af6b2c4fabc03d4" },
+  //   {
+  //     comments: {
+  //       $elemMatch: { _id: "6332cd37738925c0fb1b0766" },
+  //     },
+  //   }
+  // );
+  // // test.comments[0].text = "YOOOOOOOOOO!!!!!!!!!!!!!";
+  // // test.save();
+
+  // console.log(test);
+  const comments = await UserPost.findByIdAndUpdate(body.postId, {
+    $pull: {
+      comments: {
+        _id: body.commentId,
+      },
+    },
+  });
+  await comments.save();
+  return test;
 };
 
 module.exports = {
@@ -88,5 +114,6 @@ module.exports = {
   updateLikes,
   updateUnlikes,
   createComments,
-  updateComments,
+  // updateComments,
+  removeComments,
 };
