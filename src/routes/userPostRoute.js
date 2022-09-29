@@ -3,10 +3,11 @@ const userController = require("../controllers/userController");
 const router = express.Router();
 
 const userPostController = require("../controllers/userPostController");
+const authController = require("../controllers/authController");
 
 router
   .route("/api/posts/new/:userId")
-  .post(userPostController.createPost)
+  .post(authController.hasAuthorization, userPostController.createPost)
   .get(userPostController.getPostsById)
   .put(userPostController.updatePostById)
   .delete(userPostController.deletePostById);

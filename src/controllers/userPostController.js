@@ -3,6 +3,7 @@ const Response = require("../helpers/apiResponse");
 
 const createPost = async (req, res) => {
   try {
+    console.log(req.user);
     const userPost = await userPostService.create({
       ...req.body,
       ...req.params,
