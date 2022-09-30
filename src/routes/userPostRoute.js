@@ -6,9 +6,9 @@ const userPostController = require("../controllers/userPostController");
 const authController = require("../controllers/authController");
 
 router
-  .route("/api/posts/new/:userId")
+  .route("/api/posts/new")
   .post(authController.hasAuthorization, userPostController.createPost)
-  .get(userPostController.getPostsById)
+  .get(authController.hasAuthorization,userPostController.getPostsById)
   .put(userPostController.updatePostById)
   .delete(userPostController.deletePostById);
 

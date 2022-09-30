@@ -1,24 +1,25 @@
 const UserPost = require("../models/postModel");
 
 const create = async (body) => {
+  console.log("i am here", body);
   const userPost = await new UserPost({
     text: body.text,
     photo: body.photo,
-    postedBy: body.userId,
+    postedBy: body._id,
   });
   await userPost.save();
   return userPost;
 };
 
 const list = async (body) => {
-  const userPost = await UserPost.find().populate("postedBy");
+  const userPost = await UserPost.findById(body._id).populate("postedBy");
   return userPost;
 };
 
 const read = async (body) => {
-  const userPost = await UserPost.find({ postedBy: body.userId }).populate(
-    "postedBy"
-  );
+  const userPost = await UserPost.find({ postedBy: body._id })
+    .populate("postedBy")
+    .sort({ createdAt: -1 });
   return userPost;
 };
 

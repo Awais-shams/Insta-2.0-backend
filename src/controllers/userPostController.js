@@ -3,20 +3,20 @@ const Response = require("../helpers/apiResponse");
 
 const createPost = async (req, res) => {
   try {
-    console.log(req.user);
     const userPost = await userPostService.create({
       ...req.body,
       ...req.params,
+      ...req.user,
     });
     Response(false, res, 200, "post created successfully", userPost);
   } catch (err) {
-    Response(true, res, 400, "post created failed");
+    Response(true, res, 400, "post created failed", err);
   }
 };
 
 const getPosts = async (req, res) => {
   try {
-    const userPost = await userPostService.list({ ...req.params });
+    const userPost = await userPostService.list({ ...req.params, ...req.user });
     Response(false, res, 200, "posts retrieved successfully", userPost);
   } catch (err) {
     Response(true, res, 400, "posts retrieved failed");
@@ -25,7 +25,7 @@ const getPosts = async (req, res) => {
 
 const getPostsById = async (req, res) => {
   try {
-    const userPost = await userPostService.read({ ...req.params });
+    const userPost = await userPostService.read({ ...req.params, ...req.user });
     Response(false, res, 200, "post retrieved successfully", userPost);
   } catch (err) {
     Response(true, res, 400, "post retrieved failed");
