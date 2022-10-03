@@ -43,6 +43,7 @@ const signout = async (req, res) => {
 
 const hasAuthorization = async (req, res, next) => {
   const token = req.header("x-auth-token");
+  console.log(token);
   if (!token) {
     return res.status(404).json({
       message: "Acces Denied",
@@ -59,7 +60,9 @@ const hasAuthorization = async (req, res, next) => {
       next();
     }
   } catch (err) {
-    return res.send(err);
+    return res.status(404).json({
+      data: err,
+    });
   }
 };
 

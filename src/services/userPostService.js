@@ -1,10 +1,13 @@
 const UserPost = require("../models/postModel");
+const S3Files = require("../middlewares/s3");
 
 const create = async (body) => {
-  console.log("i am here", body);
+  await S3Files.uploadFileToS3(body);
+  const downloadImgUrl = await S3Files.downloadFileFromS3(body.originalname);
+
   const userPost = await new UserPost({
-    text: body.text,
-    photo: body.photo,
+    text: body.caption,
+    photo: downloadImgUrl,
     postedBy: body._id,
   });
   await userPost.save();
@@ -24,7 +27,7 @@ const read = async (body) => {
 };
 
 const update = async (body) => {
-  const userPost = await UserPost.findByIdAndUpdate(body.userId, {
+  const userPost = await UserPost.findByIdAndUpdate(body._id, {
     $set: {
       text: body.text,
     },
@@ -34,7 +37,9 @@ const update = async (body) => {
 };
 
 const remove = async (body) => {
-  const userPost = await UserPost.findByIdAndDelete(body.userId);
+  console.log(body);
+  const userPost = await UserPost.findOneAndDelete({ _id: body.postId });
+  console.log(userPost);
   return userPost;
 };
 

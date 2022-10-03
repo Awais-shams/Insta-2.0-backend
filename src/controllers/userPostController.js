@@ -2,11 +2,13 @@ const userPostService = require("../services/userPostService");
 const Response = require("../helpers/apiResponse");
 
 const createPost = async (req, res) => {
+  console.log("accepting the file", req.file);
   try {
     const userPost = await userPostService.create({
       ...req.body,
       ...req.params,
       ...req.user,
+      ...req.file,
     });
     Response(false, res, 200, "post created successfully", userPost);
   } catch (err) {
@@ -24,6 +26,7 @@ const getPosts = async (req, res) => {
 };
 
 const getPostsById = async (req, res) => {
+  console.log("i am here");
   try {
     const userPost = await userPostService.read({ ...req.params, ...req.user });
     Response(false, res, 200, "post retrieved successfully", userPost);
@@ -37,6 +40,7 @@ const updatePostById = async (req, res) => {
     const userPost = await userPostService.update({
       ...req.body,
       ...req.params,
+      ...req.user
     });
     Response(false, res, 200, "post updated successfully", userPost);
   } catch (err) {
@@ -46,7 +50,7 @@ const updatePostById = async (req, res) => {
 
 const deletePostById = async (req, res) => {
   try {
-    const userPost = await userPostService.remove({ ...req.params });
+    const userPost = await userPostService.remove({ ...req.params,...req.user });
     Response(false, res, 200, "post deleted successfully", userPost);
   } catch (err) {
     Response(true, res, 400, "post deleted failed");

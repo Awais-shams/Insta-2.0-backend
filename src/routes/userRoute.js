@@ -11,15 +11,16 @@ router
   .get(userController.getUsers);
 
 router
+  .route("/api/users/:userId/profile")
+  .put(upload.single("image"), userController.userProfile)
+  .get(userController.getUserProfile);
+
+router
   .route("/api/users/:userId")
   .get(authController.hasAuthorization, userController.getUserById)
   .put(authController.hasAuthorization, userController.updateUserById)
   .delete(authController.hasAuthorization, userController.deleteUserById);
 
 router.route("/api/users/follow").put(userController.addFollowing);
-router
-  .route("/api/users/:userId/profile")
-  .put(upload.single("image"), userController.userProfile)
-  .get(userController.getUserProfile);
 
 module.exports = router;
