@@ -40,7 +40,7 @@ const updatePostById = async (req, res) => {
     const userPost = await userPostService.update({
       ...req.body,
       ...req.params,
-      ...req.user
+      ...req.user,
     });
     Response(false, res, 200, "post updated successfully", userPost);
   } catch (err) {
@@ -49,8 +49,12 @@ const updatePostById = async (req, res) => {
 };
 
 const deletePostById = async (req, res) => {
+  console.log(req.params);
   try {
-    const userPost = await userPostService.remove({ ...req.params,...req.user });
+    const userPost = await userPostService.remove({
+      ...req.params,
+      ...req.user,
+    });
     Response(false, res, 200, "post deleted successfully", userPost);
   } catch (err) {
     Response(true, res, 400, "post deleted failed");

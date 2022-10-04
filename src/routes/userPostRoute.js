@@ -13,12 +13,12 @@ router
     upload.single("photo"),
     userPostController.createPost
   )
-  .get(authController.hasAuthorization, userPostController.getPostsById)
-  .put(authController.hasAuthorization, userPostController.updatePostById);
+  .get(authController.hasAuthorization, userPostController.getPostsById);
 
 router
   .route("/api/posts/new/:postId")
-  .delete(authController.hasAuthorization, userPostController.deletePostById);
+  .delete(authController.hasAuthorization, userPostController.deletePostById)
+  .put(authController.hasAuthorization, userPostController.updatePostById);
 
 // router.route("/api/posts").get(userPostController.getPosts);
 

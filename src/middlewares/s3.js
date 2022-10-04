@@ -37,7 +37,7 @@ const downloadFileFromS3 = async (key) => {
   };
   const command = new GetObjectCommand(getObjectParams);
   //  Generate URL
-  return await getSignedUrl(s3Client, command );
+  return await getSignedUrl(s3Client, command, { expiresIn: 86400 });
 };
 
 module.exports = { uploadFileToS3, downloadFileFromS3 };

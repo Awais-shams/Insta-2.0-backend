@@ -27,17 +27,24 @@ const read = async (body) => {
 };
 
 const update = async (body) => {
-  const userPost = await UserPost.findByIdAndUpdate(body._id, {
-    $set: {
-      text: body.text,
+  console.log(body);
+  const userPost = await UserPost.findOneAndUpdate(
+    { _id: body.postId },
+    {
+      $set: {
+        text: body.caption,
+      },
     },
-  });
+    {
+      new: true,
+    }
+  );
   await userPost.save();
   return userPost;
 };
 
 const remove = async (body) => {
-  console.log(body);
+  console.log("TTTT", body);
   const userPost = await UserPost.findOneAndDelete({ _id: body.postId });
   console.log(userPost);
   return userPost;
