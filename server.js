@@ -1,16 +1,22 @@
 // * packages imports
 const express = require("express");
+const http = require("http");
+const { Server } = require("socket.io");
+
 const mongoose = require("mongoose");
 const helmet = require("helmet");
 const morgan = require("morgan");
 const cors = require("cors");
 var cookieParser = require("cookie-parser");
 require("dotenv").config({ path: "./src/config/config.env" });
+
 // const errorHandler = require("./src/middlewares/error");
+
 // * local imports
 const userRoutes = require("./src/routes/userRoute");
 const authRoutes = require("./src/routes/authRoute");
 const userPostRoutes = require("./src/routes/userPostRoute");
+const { createServer } = require("http");
 
 // * Connecting to mongodb
 mongoose
@@ -20,6 +26,23 @@ mongoose
 
 const app = express();
 const port = process.env.PORT || 3000;
+
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: "*",
+    allowedHeaders: ["my-custom-header"],
+  },
+});
+
+io.on("connection", (socket) => {
+  console.log("what is socket: ", socket);
+  console.log("socket is active");
+  socket.on("chat", (payload) => {
+    console.log("What is payload", payload);
+    io.emit("chat", payload);
+  });
+});
 
 // * Middlewares
 app.use(express.json());
@@ -34,4 +57,4 @@ app.use("/", userPostRoutes);
 app.use("/", authRoutes);
 
 // * Creating a web server
-app.listen(port, () => console.log(`Listening on Port ${port}...`));
+server.listen(port, () => console.log(`Listening on Port ${port}...`));
