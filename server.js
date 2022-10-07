@@ -30,17 +30,22 @@ const port = process.env.PORT || 3000;
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "*",
+    origin: "http://localhost:3001",
     allowedHeaders: ["my-custom-header"],
   },
 });
 
 io.on("connection", (socket) => {
-  console.log("what is socket: ", socket);
+  console.log(`${socket.id}: user is connected`);
   console.log("socket is active");
+
+  socket.on("disconnect", () => {
+    console.log("User is disconnected");
+  });
+
   socket.on("chat", (payload) => {
     console.log("What is payload", payload);
-    io.emit("chat", payload);
+    io.emit("chatResponse", payload);
   });
 });
 
