@@ -15,7 +15,9 @@ const create = async (body) => {
 };
 
 const list = async (body) => {
-  const userPost = await UserPost.findById(body._id).populate("postedBy");
+  const userPost = await UserPost.find()
+    .populate("postedBy")
+    .sort({ createdAt: -1 });
   return userPost;
 };
 
@@ -44,19 +46,24 @@ const update = async (body) => {
 };
 
 const remove = async (body) => {
-  console.log("TTTT", body);
-  const userPost = await UserPost.findOneAndDelete({ _id: body.postId });
+  const userPost = await UserPost.findOneAndDelete({
+    _id: body.postId,
+    postedBy: body._id,
+  });
   console.log(userPost);
   return userPost;
 };
 
 const updateLikes = async (body) => {
-  const likes = await UserPost.findByIdAndUpdate(body.postId, {
-    $push: {
-      likes: body.userId,
-      new: true,
-    },
-  });
+  const likes = await UserPost.findOneAndUpdate(
+    { _id: body.postId, postedBy: body._id },
+    {
+      $push: {
+        likes: body.userId,
+        new: true,
+      },
+    }
+  );
   await likes.save();
   return likes;
 };

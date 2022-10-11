@@ -7,6 +7,10 @@ const authController = require("../controllers/authController");
 const upload = require("../middlewares/multer");
 
 router
+  .route("/api/posts")
+  .get(authController.hasAuthorization, userPostController.getPosts);
+
+router
   .route("/api/posts/new")
   .post(
     authController.hasAuthorization,
